@@ -9,3 +9,4 @@ iota.getNodeInfo()
     .catch(error => {
         console.log(`Request error: ${error.message}`)
     })
+
