@@ -1,5 +1,5 @@
 module.exports = {
-    date = Date.now(),
+    challandate : new Date(),
     platenum: "",
     ipfshash: "",//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv',//result[0].hash,
     geoLat: 0,
