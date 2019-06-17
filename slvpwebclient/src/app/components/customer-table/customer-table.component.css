@@ -1,0 +1,35 @@
+
+.mat-table__wrapper .mat-table {
+  min-width: auto !important;
+  width: 100% !important;
+}
+
+.mat-header-row {
+  width: 100%;
+}
+
+.mat-row {
+  width: 100%;
+}
+
+
+
+
+/* test(e,row){
+   
+  if(e.checked){    
+    this.selectedRows.push(row);
+  }
+  else{
+   let rmIdx;
+    this.selectedRows.map((ele,idx) => {if (row.position == ele.position){
+      rmIdx=idx;
+    }})
+    console.log("need to emove",rmIdx)
+    this.selectedRows.splice(rmIdx,1)
+    
+  }
+  console.log(this.selectedRows);
+ 
+ 
+} */

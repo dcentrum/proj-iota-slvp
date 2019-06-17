@@ -1,0 +1,14 @@
+<h3>public view</h3>
+<form>
+  <div>
+    <mat-form-field>
+      <mat-label>plate number</mat-label>
+      <input matInput type="text" [(ngModel)]="value" name="number">
+      <button mat-raised-button matSuffix color="primary" (click)="search(value)">Search</button>
+    </mat-form-field>
+  </div>
+</form>
+
+<div *ngIf="isRecords">
+    <app-customer-table></app-customer-table>
+</div>
