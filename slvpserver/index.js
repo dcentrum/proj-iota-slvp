@@ -2,10 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var ipfs = require('./ipfsService.js');
 var mam = require('./mamService.js');
+var appSrv = require('./AppService.js');
 var express = require('express');
 var multer = require('multer');
 var upload = multer()
-var TChallan = require('./models/TChallan');
+//var TChallan = require('./models/TChallan');
 
 var app = express();
 
@@ -43,27 +44,14 @@ app.post('/ipfs/files', upload.array('ipfsfiles'), function (req, res, next) {
   });
 });
 
-app.post('/ipfs/file', upload.single('ipfsfile'), (req, res) => {
-  let mamrec = new TChallan({
-    date: Date.now(),
-    platenum: req.body.platenum,
-    ipfshash: result[0].hash,//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv',//result[0].hash,
-    geoLat: req.body.geoLat,
-    geoLng: req.body.geoLng,
-    description: "signal jump",
-    isAppealed: false,
-    applCmnts: "",
-    isApplAprvd: false,
-    isApplAprvCmnts: "",
-    isPaid: false,
-    payTransHash: ""
-  });
-  mam.publish(mamrec, true).then((result) => {
-    //console.log(JSON.stringify(result));
-    res.status(200).json({ iotaroot: result.mamMsg.root, ipfshash: result[0].hash/*'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv'*/ });
-  }).catch((err) => {
-    res.status(500).json({ error: err.toString() })
-  });
+app.post('/ipfs/file', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    const result = await appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
+    console.log(result);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
 });
 
 app.get('/iota/channel/:root', (req, res) => {
