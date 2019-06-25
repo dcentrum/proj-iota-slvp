@@ -39,11 +39,11 @@ create : function createTable(){
 },
 
 insert : function insertDb(Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Violation_Appeal){
-    db.run('INSERT INTO Violation_Details VALUES(Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Violation_Appeal)',function(err){
+    db.run('INSERT INTO Violation_Details VALUES(?,?,?,?,?)',[Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Violation_Appeal],function(err){
       if (err) {
           return console.error(err.message);
         }
-        console.log('Prepared Insert Statement');
+        console.log('Inserted Successfully');
   })
   },
   
@@ -63,13 +63,17 @@ update : function updateDb(Violation_Id){
     }
     console.log('Row(s) updated: '+ this.changes);
   })
-  }
-}
+  },
 
 
-db.close(function(err){
+
+close : function close(){
+  db.close(function(err){
     if (err) {
         return console.error(err.message);
       }
       console.log('Closed the PROJ_SLVP database connection.');
 })
+}
+
+}
