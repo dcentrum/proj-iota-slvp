@@ -2,6 +2,7 @@ const Mam = require('@iota/mam');
 const { asciiToTrytes, trytesToAscii } = require('@iota/converter');
 
 
+
 module.exports = {
     mamState: {},
     initialize: () => {

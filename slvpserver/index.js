@@ -1,7 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var ipfs = require('./ipfsService.js');
-var mam = require('./mamService.js');
 var appSrv = require('./AppService.js');
 var express = require('express');
 var multer = require('multer');
@@ -10,70 +8,69 @@ var upload = multer()
 
 var app = express();
 
-mam.initialize();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-//try http://localhost:4000/ipfs/get?ipfshash=QmTgC2pWbbAfZ5UpRYsLgi62qbcormwnA1QBH2jarFwJ8Z
+//try http://localhost:4000/api/hello
 app.get('/api/hello', async (req, res) => {
-  res.status(200).json({ message: "hello" });
-  t.is
-});
-
-//try http://localhost:4000/ipfs/get?ipfshash=QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv
-app.get('/ipfs/getimage', async (req, res) => {
-  ipfs.get(req.query.ipfshash).then((result) => {
-    var img = new Buffer(result[0].content, 'base64');
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': img.length
-    });
-    res.end(img);
-  }).catch((err) => {
-    res.status(500).json({ error: err.toString() })
-  });
-});
-app.post('/ipfs/files', upload.array('ipfsfiles'), function (req, res, next) {
-  req.files.forEach(file => {
-    ipfs.addFile(req.body.platenum, req.file.buffer).then((result) => {
-      res.status(200).json({ hash: result[0].hash });
-    }).catch((err) => {
-      res.status(500).json({ error: err.toString() })
-    });
-  });
-});
-
-app.post('/ipfs/file', upload.single('ipfsfile'), async (req, res) => {
   try {
-    const result = await appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
-    console.log(result);
-    return res.status(200).json(result)
+    res.status(200).json({ message: "hello" });
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
   }
 });
 
-app.get('/iota/channel/:root', (req, res) => {
+//try http://localhost:4000/api/ipfs/getimage?ipfshash=QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv
+app.get('/api/ipfs/getimage', async (req, res) => {
+  try {
+    var img = await appSrv.getImage(req.query.ipfshash);
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': img.length
+    });
+    res.end(img);
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 
-  mam.fetch(req.params.root).then((result) => {
+app.post('/api/ipfs/file', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    const result = await appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
+//http://localhost:4000/api/iota/channel/VSVIGXXT9SPPKPAOSNTPRAYSEMHWLYEYKTVHBWLT9RIZYHRNPTBGVASNVMLZ9LXJZHYWIXZJBDDUT9TVX
+app.get('/api/iota/channel/:root', async (req, res) => {
+  try {
+    var result = await appSrv.getChannel(req.params.root);
     res.status(200).json(result);
-  }).catch((err) => {
-    res.status(500).json({ error: err.toString() })
-  });
-
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
 });
-
-
-
-app.post('/ipfs/add', async (req, res) => {
-  ipfs.add(req.body.data).then((result) => {
-    res.status(200).json({ hash: result[0].hash });
-  }).catch((err) => {
-    res.status(500).json({ error: err.toString() })
-  });
+app.get('/api/challans/:platenum', async (req, res) => {
+  try {
+    var result = await appSrv.getChallans(req.params.platenum);
+    res.status(200).json(result);
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
 });
+// app.get('/v2/users/:username',
+//   findUserByUsernameMiddleware,
+//   function(request, response, next){
+//   return response.render('user', request.user);
+// });
+// app.get('/v2/admin/:username',
+//   findUserByUsernameMiddleware,
+//   function(request, response, next){
+//   return response.render('admin', request.user);
+// });
 
 app.listen(4000, function () {
-  console.log('Example app listening on port 4000!');
+  console.log('App listening on port 4000!');
 });
