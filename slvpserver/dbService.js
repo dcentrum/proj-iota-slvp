@@ -20,17 +20,20 @@
 
 var sqlite3 = require('sqlite3').verbose();
 
+module.exports = {
 
-let db = new sqlite3.Database('./PROJ_SLVP.db',sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+openDB : function(){  
+  db = new sqlite3.Database('./PROJ_SLVP.db',sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if(err){
         return console.error(err.message);
     }
     console.log('Created/connected to PROJ_SLVP sqlite3 db.');
+    //return db;
 })
+},
 
-module.exports = {
-create : function createTable(){
-    db.run('CREATE TABLE Violation_Details(Violation_Id INTEGER PRIMARY KEY, Vehicle_No text NOT NULL, IOTA_Hash text NOT NULL, IPFS_Hash text NOT NULL, Violation_Appeal BOOLEAN);',function(err){
+createTable : function createTable(){
+    db.run('CREATE TABLE Violation_Details(challanNum text PRIMARY KEY, platenum text NOT NULL, challanDate DATE NOT NULL, IOTA_Hash text NOT NULL, IOTA_Seed text NOT NULL, IPFS_Hash text NOT NULL, isAppealed BOOLEAN, isAppealedAccepted BOOLEAN, isPaid BOOLEAN);',function(err){
         if(err){
             return console.error(err.message);
         }
@@ -38,8 +41,8 @@ create : function createTable(){
     });
 },
 
-insert : function insertDb(Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Violation_Appeal){
-    db.run('INSERT INTO Violation_Details VALUES(?,?,?,?,?)',[Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Violation_Appeal],function(err){
+addChallan : function addChallan(challanNum, platenum, challanDate, IOTA_Hash, IOTA_Seed, IPFS_Hash){
+    db.run('INSERT INTO Violation_Details VALUES(?,?,?,?,?,?,NULL,NULL,NULL)',[challanNum, platenum, challanDate, IOTA_Hash, IOTA_Seed, IPFS_Hash],function(err){
       if (err) {
           return console.error(err.message);
         }
@@ -47,25 +50,41 @@ insert : function insertDb(Violation_Id, Vehicle_No, IOTA_Hash, IPFS_Hash, Viola
   })
   },
   
-select : function selectDb(){
-    db.all('SELECT * FROM Violation_Details', [],function(err,row){
+/*getChallans : function getChallans(platenum, challanDate, isAppealed, isPaid){
+    db.all('SELECT * FROM Violation_Details WHERE platenum = ? AND challanDate = ? AND  isAppealed = ? AND isPaid = ?', [platenum, challanDate, isAppealed, isPaid],function(err,row){
       if (err) {
           return console.error(err.message);
         }
         console.log(row);
   })
-  },
+},*/
   
-update : function updateDb(Violation_Id){
-  db.run('UPDATE Violation_Details SET Violation_Appeal = true WHERE Violation_Id = ?',[Violation_Id],function(err){
+appealChallan : function appealChallan(platenum, challanNum){
+  db.run('UPDATE Violation_Details SET isAppealed = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
     if (err) {
       return console.error(err.message);
     }
     console.log('Row(s) updated: '+ this.changes);
   })
-  },
+},
 
+appealAction : function appealAction(platenum, challanNum){
+    db.run('UPDATE Violation_Details SET isAppealedAccepted = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Row(s) updated: '+ this.changes);
+    })
+},
 
+payChallan : function appealAction(platenum, challanNum){
+  db.run('UPDATE Violation_Details SET isPaid = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
+      if (err) {
+        return console.error(err.message);
+      }
+    console.log('Row(s) updated: '+ this.changes);
+  })
+},
 
 close : function close(){
   db.close(function(err){
