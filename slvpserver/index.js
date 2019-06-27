@@ -8,6 +8,9 @@ var upload = multer()
 
 var app = express();
 
+
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
@@ -60,16 +63,18 @@ app.get('/api/challans/:platenum', async (req, res) => {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-// app.get('/v2/users/:username',
-//   findUserByUsernameMiddleware,
-//   function(request, response, next){
-//   return response.render('user', request.user);
-// });
-// app.get('/v2/admin/:username',
-//   findUserByUsernameMiddleware,
-//   function(request, response, next){
-//   return response.render('admin', request.user);
-// });
+
+function generateSeed() {
+  var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
+  var seedLen = 81;
+  var seed = '';
+  var i = 1;
+  while (i <= seedLen) {
+    seed += charset.charAt(Math.floor(Math.random() * charset.length));
+    i++;
+  }
+  return seed;
+}
 
 app.listen(4000, function () {
   console.log('App listening on port 4000!');
