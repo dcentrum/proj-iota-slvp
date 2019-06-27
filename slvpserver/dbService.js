@@ -42,7 +42,7 @@ createTable : function createTable(){
 },
 
 addChallan : function addChallan(challanNum, platenum, challanDate, IOTA_Hash, IOTA_Seed, IPFS_Hash){
-    db.run('INSERT INTO Violation_Details VALUES(?,?,?,?,?,?,NULL,NULL,NULL)',[challanNum, platenum, challanDate, IOTA_Hash, IOTA_Seed, IPFS_Hash],function(err){
+    db.run('INSERT INTO Violation_Details VALUES(?,?,?,?,?,?,FALSE,FALSE,FALSE)',[challanNum, platenum, challanDate, IOTA_Hash, IOTA_Seed, IPFS_Hash],function(err){
       if (err) {
           return console.error(err.message);
         }
@@ -50,17 +50,21 @@ addChallan : function addChallan(challanNum, platenum, challanDate, IOTA_Hash, I
   })
   },
   
-/*getChallans : function getChallans(platenum, challanDate, isAppealed, isPaid){
-    db.all('SELECT * FROM Violation_Details WHERE platenum = ? AND challanDate = ? AND  isAppealed = ? AND isPaid = ?', [platenum, challanDate, isAppealed, isPaid],function(err,row){
+getChallans : function getChallans(platenumIn, challanDateIn, isAppealedIn, isPaidIn){
+  let sql = 'SELECT * FROM Violation_Details WHERE CASE WHEN ? IS NULL THEN 1 ELSE platenum END = CASE WHEN ? IS NULL THEN 1 ELSE ? END ' +
+                                            'AND CASE WHEN ? IS NULL THEN 1 ELSE challanDate END = CASE WHEN ? IS NULL THEN 1 ELSE ? END '+
+                                            'AND CASE WHEN ? IS NULL THEN 1 ELSE isAppealed END = CASE WHEN ? IS NULL THEN 1 ELSE ? END '+
+                                            'AND CASE WHEN ? IS NULL THEN 1 ELSE isPaid END = CASE WHEN ? IS NULL THEN 1 ELSE ? END';
+    db.all(sql, [platenumIn, platenumIn, platenumIn, challanDateIn, challanDateIn, challanDateIn, isAppealedIn, isAppealedIn, isAppealedIn, isPaidIn, isPaidIn, isPaidIn], function(err,row){
       if (err) {
           return console.error(err.message);
         }
         console.log(row);
   })
-},*/
+},
   
-appealChallan : function appealChallan(platenum, challanNum){
-  db.run('UPDATE Violation_Details SET isAppealed = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
+appealChallan : function appealChallan(challanNum, platenum){
+  db.run('UPDATE Violation_Details SET isAppealed = true WHERE challanNum = ? AND platenum = ?',[challanNum, platenum],function(err){
     if (err) {
       return console.error(err.message);
     }
@@ -68,8 +72,8 @@ appealChallan : function appealChallan(platenum, challanNum){
   })
 },
 
-appealAction : function appealAction(platenum, challanNum){
-    db.run('UPDATE Violation_Details SET isAppealedAccepted = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
+appealAction : function appealAction(challanNum, platenum){
+    db.run('UPDATE Violation_Details SET isAppealedAccepted = true WHERE challanNum = ? AND platenum = ?',[challanNum, platenum],function(err){
       if (err) {
         return console.error(err.message);
       }
@@ -77,8 +81,8 @@ appealAction : function appealAction(platenum, challanNum){
     })
 },
 
-payChallan : function appealAction(platenum, challanNum){
-  db.run('UPDATE Violation_Details SET isPaid = true WHERE challanNum = ? AND platenum = ?',[platenum, challanNum],function(err){
+payChallan : function payChallan(challanNum, platenum){
+  db.run('UPDATE Violation_Details SET isPaid = true WHERE challanNum = ? AND platenum = ?',[challanNum, platenum],function(err){
       if (err) {
         return console.error(err.message);
       }
