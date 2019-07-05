@@ -55,26 +55,34 @@ app.get('/api/iota/channel/:root', async (req, res) => {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-app.get('/api/challans/:platenum', async (req, res) => {
+app.get('/api/challans/:platenum?/:date?/:isAppealed?/:isPaid?', async (req, res) => {
   try {
-    var result = await appSrv.getChallans(req.params.platenum);
+    var platenum = req.params.platenum; //either a value or undefined
+    var date = req.params.date;
+    var isAppealed = req.params.isAppealed;
+    var isPaid = req.params.isPaid;
+    var result = await appSrv.getChallans(platenum, date, isAppealed, isPaid);
     res.status(200).json(result);
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-
-function generateSeed() {
-  var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
-  var seedLen = 81;
-  var seed = '';
-  var i = 1;
-  while (i <= seedLen) {
-    seed += charset.charAt(Math.floor(Math.random() * charset.length));
-    i++;
+app.post('/api/challan/appeal', async (req, res) => {
+  try {
+    const result = await appSrv.appealAction(req.body.challannum, req.body.comments);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
   }
-  return seed;
-}
+});
+app.post('/api/challan/appeal/action', async (req, res) => {
+  try {
+    const result = await appSrv.appealAction(req.body.challannum, req.body.comments, req.body.accept);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 
 app.listen(4000, function () {
   console.log('App listening on port 4000!');

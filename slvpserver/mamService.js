@@ -59,6 +59,17 @@ module.exports = {
             console.log('MAM append error', error);
             return null;
         }
-    }
+    },
+    generateSeed=()=> {
+        var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
+        var seedLen = 81;
+        var seed = '';
+        var i = 1;
+        while (i <= seedLen) {
+          seed += charset.charAt(Math.floor(Math.random() * charset.length));
+          i++;
+        }
+        return seed;
+      }
 
 }
