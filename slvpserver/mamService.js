@@ -59,6 +59,6 @@ module.exports = {
             console.log('MAM append error', error);
             return null;
         }
-    };
+    }
 
 }
