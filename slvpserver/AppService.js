@@ -6,12 +6,12 @@ mam.initialize();
 module.exports = {
     ProcessFile: async (platenum, buffer, geoLat, geoLng, desc) => {
         try {
-            //const ipfsResult = await ipfs.addFile(platenum, buffer);
+            const ipfsResult = await ipfs.addFile(platenum, buffer);
             let mamrec = {
                 challandate: Date().now(),
                 challanNum: platenum + Date.now().getMilliseconds().toString(),
                 platenum: platenum,
-                ipfshash: 'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv',//ipfsResult[0].hash
+                ipfshash: ipfsResult[0].hash,//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv',
                 geoLat: geoLat,
                 geoLng: geoLng,
                 locationName: "",
@@ -25,10 +25,10 @@ module.exports = {
                 payTransHash: null
             };
             const mamresult = await mam.publish(mamrec, true);
-            await db.addChallan(mamresult, mamresult.mamMsg.root);
+            await db.addChallan(mamrec.challanNum, mamrec.platenum, mamrec.challandate, mamresult.mamMsg.root, mamresult.mamMsg.state.seed, mamrec.ipfshash);
             return {
                 iotaroot: mamresult.mamMsg.root,
-                ipfshash: 'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv'//ipfsResult[0].hash
+                ipfshash: ipfsResult[0].hash//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv'
             };
         } catch (e) {
             throw `failed to Process File: ${e}`
@@ -50,7 +50,7 @@ module.exports = {
             throw `failed to get Channel: ${e}`
         }
     },
-    getChallans: async (platenum, date = null, isAppealed = false, isPaid = false) => {
+    getChallans: async (platenum = "", date = null, isAppealed = null, isPaid = null) => {
         try {
             const result = await db.getChallans(platenum, date, isAppealed, isPaid);
             return result;
@@ -58,17 +58,38 @@ module.exports = {
             throw `failed to get Challans: ${e}`
         }
     },
-    appealChallan: async (platenum, challanNum, commnts) => {
+    appealChallan: async (challanNum, commnts) => {
         try {
-            const result = await db.appealChallan(platenum, challanNum, commnts);
+            const dbChallan = await db.getChallan(challanNum);
+            const mamPrevChallan = this.getChannel(challan.IOTA_Hash);
+            let msg = {};
+            mamPrevChallan.messages.forEach(element => {
+                msg = element;
+
+            });
+            msg.isAppealed = true,
+                msg.applCmnts = commnts;
+            const mamres = await mam.updateChannel(msg, { start: dbChallan.IOTA_Channel_Start, seed: dbChallan.IOTA_Seed })
+            const result = await db.appealChallan(challanNum, mamres.mamMsg.root);
             return result;
         } catch (e) {
             throw `failed to get Challans: ${e}`
         }
     },
-    appealAction: async (platenum, challanNum, accept, commnts) => {
+    appealAction: async (challanNum, accept, commnts) => {
         try {
-            const result = await db.appealAction(platenum, challanNum, accept, commnts);
+            const dbChallan = await db.getChallan(challanNum);
+            const mamPrevChallan = this.getChannel(challan.IOTA_Hash);
+            let msg = {};
+            mamPrevChallan.messages.forEach(element => {
+                msg = element;
+
+            });
+            msg.isApplAprvd = accept,
+                msg.isApplAprvCmnts = commnts;
+            const mamres = await mam.updateChannel(msg, { start: dbChallan.IOTA_Channel_Start, seed: dbChallan.IOTA_Seed })
+
+            const result = await db.appealAction(challanNum, accept, mamres.mamMsg.root);
             return result;
         } catch (e) {
             throw `failed to get Challans: ${e}`
