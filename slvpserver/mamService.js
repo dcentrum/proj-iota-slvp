@@ -5,12 +5,13 @@ const { asciiToTrytes, trytesToAscii } = require('@iota/converter');
 
 module.exports = {
     mamState: {},
-    seed: "",
+    seed: '',
     initialize: () => {
-        if (this.seed.length > 0)
-            this.mamState = Mam.init({ provider: 'https://nodes.devnet.iota.org:443' }, this.seed, null);
+
+        if (this.seed !="")
+        this.mamState = Mam.init({ provider: 'https://nodes.devnet.iota.org:443' });            
         else {
-            this.mamState = Mam.init({ provider: 'https://nodes.devnet.iota.org:443' });
+            this.mamState = Mam.init({ provider: 'https://nodes.devnet.iota.org:443' }, this.seed, null);
         }
     },
     updateMamState: (newMamState) => { this.mamState = newMamState },
@@ -41,7 +42,7 @@ module.exports = {
             return null;
         }
     },
-    updateChannel = async (data, prevData) => {
+    updateChannel: async (data, prevData) => {
 
         const mamState = {
             subscribed: [],
@@ -60,16 +61,16 @@ module.exports = {
             return null;
         }
     },
-    generateSeed=()=> {
+    generateSeed: () => {
         var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
         var seedLen = 81;
         var seed = '';
         var i = 1;
         while (i <= seedLen) {
-          seed += charset.charAt(Math.floor(Math.random() * charset.length));
-          i++;
+            seed += charset.charAt(Math.floor(Math.random() * charset.length));
+            i++;
         }
         return seed;
-      }
+    }
 
 }

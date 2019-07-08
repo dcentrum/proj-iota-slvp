@@ -1,15 +1,19 @@
 var ipfs = require('./ipfsService.js');
 var mam = require('./mamService.js');
-var db = require('./dbService.js');
+var appdb = require('./dbService.js');
 mam.initialize();
+
+var db = new appdb();
 //var mdbam = require('./dbService.js');
 module.exports = {
     ProcessFile: async (platenum, buffer, geoLat, geoLng, desc) => {
+
         try {
+            console.log(Date.now());
             const ipfsResult = await ipfs.addFile(platenum, buffer);
             let mamrec = {
-                challandate: Date().now(),
-                challanNum: platenum + Date.now().getMilliseconds().toString(),
+                challandate: new Date(),
+                challanNum: platenum + (new Date().getMilliseconds().toString()),
                 platenum: platenum,
                 ipfshash: ipfsResult[0].hash,//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv',
                 geoLat: geoLat,
@@ -25,7 +29,9 @@ module.exports = {
                 payTransHash: null
             };
             const mamresult = await mam.publish(mamrec, true);
-            await db.addChallan(mamrec.challanNum, mamrec.platenum, mamrec.challandate, mamresult.mamMsg.root, mamresult.mamMsg.state.seed, mamrec.ipfshash);
+            console.log(mamresult)
+            db.addChallan(mamrec.challanNum, mamrec.platenum, mamrec.challandate, mamresult.mamMsg.root, mamresult.mamMsg.state.seed, mamrec.ipfshash);
+            console.log(mamresult)
             return {
                 iotaroot: mamresult.mamMsg.root,
                 ipfshash: ipfsResult[0].hash//'QmRuDCUrEx3FTLLebdmC71TySwcXaWJCxzioWzoeSnHHSv'
@@ -33,6 +39,7 @@ module.exports = {
         } catch (e) {
             throw `failed to Process File: ${e}`
         }
+
     },
     getImage: async (hash) => {
         try {
@@ -50,13 +57,19 @@ module.exports = {
             throw `failed to get Channel: ${e}`
         }
     },
-    getChallans: async (platenum = "", date = null, isAppealed = null, isPaid = null) => {
+    getChallans: (platenum = "", date = null, isAppealed = null, isPaid = null,func) => {
         try {
-            const result = await db.getChallans(platenum, date, isAppealed, isPaid);
-            return result;
+            const result = db.getChallans(platenum, date, isAppealed, isPaid,func);
+
+
         } catch (e) {
             throw `failed to get Challans: ${e}`
+            //console.log(e)
         }
+        // finally {
+        //     //retur
+        //     //db.close();
+        // }
     },
     appealChallan: async (challanNum, commnts) => {
         try {
@@ -74,6 +87,9 @@ module.exports = {
             return result;
         } catch (e) {
             throw `failed to get Challans: ${e}`
+        }
+        finally {
+            db.close();
         }
     },
     appealAction: async (challanNum, accept, commnts) => {
@@ -93,6 +109,9 @@ module.exports = {
             return result;
         } catch (e) {
             throw `failed to get Challans: ${e}`
+        }
+        finally {
+            db.close();
         }
     }
 }

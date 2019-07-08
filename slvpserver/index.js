@@ -61,15 +61,24 @@ app.get('/api/challans/:platenum?/:date?/:isAppealed?/:isPaid?', async (req, res
     var date = req.params.date;
     var isAppealed = req.params.isAppealed;
     var isPaid = req.params.isPaid;
-    var result = await appSrv.getChallans(platenum, date, isAppealed, isPaid);
-    res.status(200).json(result);
+    var result = await appSrv.getChallans(platenum, date, isAppealed, isPaid,
+      function (err, rows) {
+       
+        if (err)
+          throw res.status(500).json({ error: err.toString() })
+        
+        return res.status(200).json(rows);;
+      }
+    );
+
+
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-app.post('/api/challan/appeal', async (req, res) => {
+app.post('/api/challan/appeal', (req, res) => {
   try {
-    const result = await appSrv.appealAction(req.body.challannum, req.body.comments);
+    const result = appSrv.appealAction(req.body.challannum, req.body.comments);
     return res.status(200).json(result)
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
