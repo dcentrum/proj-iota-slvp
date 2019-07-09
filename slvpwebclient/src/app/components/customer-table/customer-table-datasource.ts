@@ -41,7 +41,7 @@ const EXAMPLE_DATA: CustomerTableItem[] = [
  */
 export class CustomerTableDataSource extends DataSource<CustomerTableItem> {
   //data: CustomerTableItem[] = EXAMPLE_DATA;
-   data:any=this.res;
+   data:any=EXAMPLE_DATA
   constructor(private res,private paginator: MatPaginator, private sort: MatSort) {
     super();
    
