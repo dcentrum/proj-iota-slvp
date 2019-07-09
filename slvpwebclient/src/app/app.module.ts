@@ -7,7 +7,7 @@ import { MatModule } from './mat/mat.module';
 import { TCustomerComponent } from './components/t-customer/t-customer.component';
 import { TAdminComponent } from './components/t-admin/t-admin.component';
 import { MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, 
-  MatPaginatorModule, MatSortModule,MatFormFieldModule ,MatInputModule} from '@angular/material';
+  MatPaginatorModule, MatSortModule,MatFormFieldModule ,MatInputModule,MatCardModule,MatProgressSpinnerModule} from '@angular/material';
 import { AppnavComponent } from './appnav/appnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AdminTableComponent } from './components/admin-table/admin-table.component';
@@ -33,7 +33,7 @@ import { LoginComponent } from '../app/components/login/login.component';
   ],
   imports: [
     BrowserModule,HttpClientModule,FormsModule,MatFormFieldModule,MatInputModule,
-    AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,
+    AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,MatCardModule,MatProgressSpinnerModule,
     MatSidenavModule, LayoutModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule
   ],
   entryComponents:[ImageDialogComponent],

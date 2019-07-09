@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DataService ,AlertService} from '../../core/data.service';
+import { DataService } from '../../core/data.service';
 
 @Component({
   selector: 'app-login',
