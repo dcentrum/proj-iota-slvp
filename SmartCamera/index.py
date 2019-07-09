@@ -11,15 +11,15 @@
 
 # picam.stop_preview()
 
-import http.client, urllib.parse
+# import http.client, urllib.parse
 
 #GET
-conn = http.client.HTTPConnection('localhost',4000)
-conn.request("GET", "/api/challans/8423")
-r1 = conn.getresponse()
-print(r1.status, r1.reason)
-print(r1.read())
-conn.close()
+# conn = http.client.HTTPConnection('localhost',4000)
+# conn.request("GET", "/api/challans/8423")
+# r1 = conn.getresponse()
+# print(r1.status, r1.reason)
+# print(r1.read())
+# conn.close()
 #POST
 
 
@@ -34,6 +34,17 @@ conn.close()
 # conn1.close()
 
 
-# url = 'http://jigsaw.w3.org/css-validator/validator'
-# files = {'file': open('style.css')}
-# response = requests.post(url, files=files)
+#using requests library
+#pip install requests
+
+# import requests
+# import os
+# image_filename = os.path.basename('sample.png')
+
+# multipart_form_data = {'ipfsfile': (image_filename,open('./sample.png', 'rb'))}
+# values = {'platenum': '8422', 'geoLat': 17, 'geoLng': 57,'desc':'wrong parking'}
+# response = requests.post('http://localhost:4000/api/ipfs/file',
+#                             files=multipart_form_data,data=values)
+
+# print(response.status_code)
+
