@@ -1,3 +1,17 @@
+0. post a challan with image
+http://localhost:4000/api/ipfs/file
+params:
+ipfsfile ( fileupload)
+platenum:8423
+geoLat:17
+geoLng:58
+desc:Signal Jump
+result:
+{
+    "iotaroot": "OGSMLZYAFIKRFOASPMQERKAHZKNSK9XH9NTOXHODEVETGIIKZO9NZZCWRTKRNSUUJIUOWLAUJ9EJSDOTY",
+    "ipfshash": "QmRMXNHKsQx9uM8g87MTQ6JB9TFzMZtVEaLuriNYNpKPPb"
+}
+
 1. Get challans
 http://localhost:4000/api/challans/[platenum]/[date]/[isappealed]/[ispaid]
 http://localhost:4000/api/challans/8423
