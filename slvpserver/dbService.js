@@ -69,11 +69,11 @@ class appdb {
   getChallans(platenumIn = "", challanDateIn, isAppealedIn, isPaidIn, func) {
     let rowss = [];
     let sql = "SELECT * FROM Violation_Details  WHERE 1=1 ";
-    sql += platenumIn.length > 0 ? " AND platenum = $platenum" : ""
+    sql += platenumIn.length > 0 ? " AND platenum = ?" : ""
     sql += challanDateIn != null ? " AND challanDate = $challanDate" : ""
     sql += isAppealedIn != null ? " AND isAppealed = $isAppealed" : ""
     sql += isPaidIn != null ? " AND isPaid = $isPaid" : ""
-    this.db.all(sql,  func);
+    this.db.all(sql,  func);//[platenumIn]
   }
   getChallan(challanNum, func) {
     this.db.get("SELECT * FROM Violation_Details WHERE challanNum = ?", challanNum, func)

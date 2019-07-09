@@ -26,6 +26,7 @@
     "@iota/mam": "^0.7.2",
     "express": "^4.17.1",
     "ipfs-http-client": "^32.0.1",
+    "mongoose": "^5.6.3",
     "multer": "^1.4.1",
     "sqlite3": "^4.0.8"
   }
