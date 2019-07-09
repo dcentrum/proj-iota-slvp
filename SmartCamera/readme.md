@@ -5,5 +5,6 @@ if you pi os does not have picamera, do the following commands on command prompt
 
 ```
 sudo pip install picamera
+pip install requests
 ```
 
