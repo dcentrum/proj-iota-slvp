@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   returnUrl: string;
+  username: string;
+  password: string;
 
   constructor(
       private route: ActivatedRoute,
@@ -30,7 +32,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loading = true;
-    let allow=this.dataService.isLoggedIn(this.model.username, this.model.password);
+    let allow=this.dataService.isLoggedIn(this.username, this.password);
     this.loading = false;
      console.log("------------>",allow);
 
