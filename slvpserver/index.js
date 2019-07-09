@@ -3,11 +3,11 @@ var bodyParser = require('body-parser');
 var appSrv = require('./AppService.js');
 var express = require('express');
 var multer = require('multer');
+var mongoose = require('mongoose');
 var upload = multer()
 //var TChallan = require('./models/TChallan');
-
+var models = require('./models');
 var app = express();
-
 
 
 
@@ -15,6 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
+models.connectDb().then(async () => {
+  console.log("mongodb connected")
+});
+
 //try http://localhost:4000/api/hello
 app.get('/api/hello', async (req, res) => {
   try {
@@ -37,10 +42,28 @@ app.get('/api/ipfs/getimage', async (req, res) => {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-
+app.post('/api/challan/appeal/action', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    const result = await appSrv.appealAction(req.body.challannum,req.body.accept,req.body.comments);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
+app.post('/api/challan/appeal', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    console.log(req);
+    const result = await appSrv.appealChallan(req.body.challannum, req.body.comments);
+    return res.status(200).json(result)
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 app.post('/api/ipfs/file', upload.single('ipfsfile'), async (req, res) => {
   try {
-    const result = await appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
+    console.log(req);
+    const result = await appSrv.addChallan(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc)
+    //appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
     return res.status(200).json(result)
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
@@ -61,37 +84,14 @@ app.get('/api/challans/:platenum?/:date?/:isAppealed?/:isPaid?', async (req, res
     var date = req.params.date;
     var isAppealed = req.params.isAppealed;
     var isPaid = req.params.isPaid;
-    var result = await appSrv.getChallans(platenum, date, isAppealed, isPaid,
-      function (err, rows) {
-       
-        if (err)
-          throw res.status(500).json({ error: err.toString() })
-        
-        return res.status(200).json(rows);;
-      }
-    );
+    var result = await appSrv.getMChallans(platenum, date, isAppealed, isPaid)
+    return res.status(200).json(result);
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 
 
-  } catch (err) {
-    throw res.status(500).json({ error: err.toString() })
-  }
-});
-app.post('/api/challan/appeal', (req, res) => {
-  try {
-    const result = appSrv.appealAction(req.body.challannum, req.body.comments);
-    return res.status(200).json(result)
-  } catch (err) {
-    throw res.status(500).json({ error: err.toString() })
-  }
-});
-app.post('/api/challan/appeal/action', async (req, res) => {
-  try {
-    const result = await appSrv.appealAction(req.body.challannum, req.body.comments, req.body.accept);
-    return res.status(200).json(result)
-  } catch (err) {
-    throw res.status(500).json({ error: err.toString() })
-  }
-});
 
 app.listen(4000, function () {
   console.log('App listening on port 4000!');
