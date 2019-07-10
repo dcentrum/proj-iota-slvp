@@ -17,7 +17,7 @@ export interface CustomerTableItem {
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: CustomerTableItem[] = [
+/* const EXAMPLE_DATA: CustomerTableItem[] = [
   {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
   {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
   {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
@@ -32,7 +32,7 @@ const EXAMPLE_DATA: CustomerTableItem[] = [
   {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
   {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
  
-];
+]; */
 
 /**
  * Data source for the CustomerTable view. This class should
@@ -41,7 +41,7 @@ const EXAMPLE_DATA: CustomerTableItem[] = [
  */
 export class CustomerTableDataSource extends DataSource<CustomerTableItem> {
   //data: CustomerTableItem[] = EXAMPLE_DATA;
-   data:any=EXAMPLE_DATA
+   //data:any=EXAMPLE_DATA
   constructor(private res,private paginator: MatPaginator, private sort: MatSort) {
     super();
    
@@ -58,16 +58,16 @@ export class CustomerTableDataSource extends DataSource<CustomerTableItem> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      observableOf(this.res),
       this.paginator.page,
       this.sort.sortChange
     ];
 
     // Set the paginator's length
-    this.paginator.length = this.data.length;
+    this.paginator.length = this.res.length;
 
     return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
+      return this.getPagedData(this.getSortedData([...this.res]));
     }));
   }
 
