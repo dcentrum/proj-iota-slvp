@@ -13,6 +13,6 @@
 </form>
 
 <div *ngIf="isRecords">
-    <app-customer-table></app-customer-table>
+    <app-customer-table [data]="searchResults"></app-customer-table>
 </div>
 </mat-card>
