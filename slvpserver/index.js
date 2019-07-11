@@ -52,7 +52,7 @@ app.post('/api/challan/appeal/action', upload.single('ipfsfile'), async (req, re
 });
 app.post('/api/challan/appeal', upload.single('ipfsfile'), async (req, res) => {
   try {
-    console.log(req);
+   
     const result = await appSrv.appealChallan(req.body.challannum, req.body.comments);
     return res.status(200).json(result)
   } catch (err) {
@@ -61,7 +61,7 @@ app.post('/api/challan/appeal', upload.single('ipfsfile'), async (req, res) => {
 });
 app.post('/api/ipfs/file', upload.single('ipfsfile'), async (req, res) => {
   try {
-    console.log(req);
+    //console.log(req);
     const result = await appSrv.addChallan(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc)
     //appSrv.ProcessFile(req.body.platenum, req.file.buffer, req.body.geoLat, req.body.geoLng, req.body.desc);
     return res.status(200).json(result)
