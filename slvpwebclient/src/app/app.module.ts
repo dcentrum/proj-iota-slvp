@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { MatModule } from './mat/mat.module';
 import { TCustomerComponent } from './components/t-customer/t-customer.component';
 import { TAdminComponent } from './components/t-admin/t-admin.component';
-import { MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, 
+import { MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule,
+   MatDatepickerModule,MatNativeDateModule,
   MatPaginatorModule, MatSortModule,MatFormFieldModule ,MatInputModule,MatCardModule,MatProgressSpinnerModule} from '@angular/material';
 import { AppnavComponent } from './appnav/appnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -15,7 +16,7 @@ import { CustomerTableComponent } from './components/customer-table/customer-tab
 import { HttpClientModule } from '@angular/common/http';
 import { ImageDialogComponent } from './shared/image-dialog/image-dialog.component';
 import { MatDialogModule } from '@angular/material';
-import { FormsModule} from '@angular/forms';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from '../app/components/login/login.component';
 
 
@@ -32,12 +33,12 @@ import { LoginComponent } from '../app/components/login/login.component';
     
   ],
   imports: [
-    BrowserModule,HttpClientModule,FormsModule,MatFormFieldModule,MatInputModule,
+    BrowserModule,HttpClientModule,FormsModule,ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,
     AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,MatCardModule,MatProgressSpinnerModule,
     MatSidenavModule, LayoutModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule
   ],
   entryComponents:[ImageDialogComponent],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

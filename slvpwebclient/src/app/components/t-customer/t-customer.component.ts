@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-t-customer',
@@ -7,14 +8,16 @@ import {MatInputModule} from '@angular/material/input';
   styleUrls: ['./t-customer.component.css']
 })
 export class TCustomerComponent implements OnInit {
-  private isRecords:boolean;
-  public searchResults:any;
+  public isSearched: boolean = false;
+  public isRecords: boolean = false;
+  public searchResults: any;
+  public number:string;
   public EXAMPLE_DATA:any = [
+    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'100',pay:'GPay'},
+    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'appeal',fine:'200',pay:'GPay'},
+    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'300',pay:'GPay'},
     {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
-    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
-    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
-    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
-    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
+    {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'600',pay:'GPay'},
     {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
     {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
     {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
@@ -25,16 +28,32 @@ export class TCustomerComponent implements OnInit {
     {img:'aa', date:'12/12/12', location:'HYD',description:'signal jump',appeal:'apepeal',fine:'200',pay:'GPay'},
    
   ];
-  constructor() { }
+  customerForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.createForm();
+  }
   
   ngOnInit() {
    
   }
 
-  search(val){
-  console.log("values is ",val)
-  this.isRecords=true;
-  this.searchResults = this.EXAMPLE_DATA;
+  search(val) {
+    if (this.customerForm.valid) {
+      this.isSearched = true; 
+      this.searchResults = this.EXAMPLE_DATA;
+      this.isRecords = this.searchResults.length >0 ? true : false;
+      console.log(val);
+    }
+    else {
+      this.isSearched = true;
+    }
+
+  }
+
+  createForm() {
+    this.customerForm = this.fb.group({
+      number: ['', Validators.required]
+    });
   }
  
 }

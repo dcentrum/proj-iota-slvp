@@ -2,17 +2,19 @@
     <mat-card-header>
       <mat-card-title>Public view</mat-card-title>
     </mat-card-header>
-<form>
+<form [formGroup]="customerForm" novalidate>
   <div>
     <mat-form-field>
       <mat-label>plate number</mat-label>
-      <input matInput type="text" [(ngModel)]="value" name="number">
+      <input matInput type="text" [(ngModel)]="value" formControlName="number">
       <button mat-raised-button matSuffix color="primary" (click)="search(value)">Search</button>
     </mat-form-field>
   </div>
 </form>
-
-<div *ngIf="isRecords">
-    <app-customer-table [data]="searchResults"></app-customer-table>
+<div *ngIf="searchResults">
+    <div *ngIf="isRecords">
+        <app-customer-table [data]="searchResults"></app-customer-table>
+    </div>
+    <div class="noRecords" *ngIf="!isRecords">No records to display</div>
 </div>
 </mat-card>
