@@ -33,7 +33,10 @@ export class CustomerTableComponent implements OnInit {
         this.dataSource = new CustomerTableDataSource(this.data,this.paginator, this.sort);
     
     }
-
+    appealStatus(event){
+      console.log(event);
+   
+    }
   openImage(id) {
     console.log("yes")
     this.configOptions = {

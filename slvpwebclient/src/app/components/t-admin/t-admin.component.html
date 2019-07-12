@@ -1,1 +1,28 @@
-<app-customer-table [data]="records"></app-customer-table>
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Admin view</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="adminForm" novalidate>
+        <div>
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="date"
+                    formControlName="date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <button mat-raised-button matSuffix color="primary" (click)="search()">Search</button>
+            </mat-form-field>
+            <div *ngIf="isSearched && adminForm.controls['date'].invalid" class="alert alert-danger">
+                <div *ngIf="isSearched && adminForm.invalid">
+                    Date is required.
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div *ngIf="searchResults">
+        <div *ngIf="isRecords">
+            <app-customer-table [data]="searchResults"></app-customer-table>
+        </div>
+        <div class="noRecords" *ngIf="!isRecords">No records to display</div>
+    </div>
+</mat-card>
