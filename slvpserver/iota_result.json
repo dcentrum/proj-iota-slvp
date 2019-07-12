@@ -106,3 +106,6 @@
         "nextRoot": "RBSEUQJKEGRIGKIULPWUN99ZXSJOBGVKDVLYJZDRYSHY9VQDYSKBVAVX9TCPLXEBTNILIFMVBKLNBCKSK"
     }
 }
+
+
+// curl https://nodes.thetangle.org:443 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "findTransactions", "tags": ["JOE"]}'
