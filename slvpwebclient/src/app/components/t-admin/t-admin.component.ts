@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DataService} from '../../core/data.service';
 import * as _moment from 'moment';
 
 export const MY_FORMATS = {
@@ -37,7 +38,7 @@ export class TAdminComponent implements OnInit {
 
 
   adminForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private dataService:DataService) {
     this.createForm();
   }
   ngOnInit() {
@@ -52,9 +53,14 @@ export class TAdminComponent implements OnInit {
   search() {
     if (this.adminForm.valid) {
       this.isSearched = true; 
-      this.searchResults = this.mockData;
-      this.isRecords = this.searchResults.length >0 ? true : false;
+     // this.searchResults = this.mockData;
+      //this.isRecords = this.searchResults.length >0 ? true : false;
       console.log("data is:", this.date.format('DD/MM/YYYY'));
+
+      this.dataService.get_challans('1234').subscribe(res=>{
+        this.searchResults = res;
+        this.isRecords = this.searchResults.length >0 ? true : false;
+      })
     }
     else {
       this.isSearched = true;

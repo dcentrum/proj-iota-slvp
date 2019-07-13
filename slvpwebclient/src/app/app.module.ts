@@ -7,8 +7,8 @@ import { MatModule } from './mat/mat.module';
 import { TCustomerComponent } from './components/t-customer/t-customer.component';
 import { TAdminComponent } from './components/t-admin/t-admin.component';
 import { MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule,
-   MatDatepickerModule,MatNativeDateModule,
-  MatPaginatorModule, MatSortModule,MatFormFieldModule ,MatInputModule,MatCardModule,MatProgressSpinnerModule, MatSnackBarModule} from '@angular/material';
+   MatDatepickerModule,MatNativeDateModule,MatSnackBarModule,
+  MatPaginatorModule, MatSortModule,MatFormFieldModule ,MatInputModule,MatCardModule,MatProgressSpinnerModule} from '@angular/material';
 import { AppnavComponent } from './appnav/appnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AdminTableComponent } from './components/admin-table/admin-table.component';
@@ -19,7 +19,9 @@ import { MatDialogModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from '../app/components/login/login.component';
-
+import { AppealComponent } from '../app/components/appeal/appeal.component';
+import { DialogComponent } from '../app/components/dialog/dialog.component';
+import { SnackbarComponent } from '../app/components/snackbar/snackbar.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,10 @@ import { LoginComponent } from '../app/components/login/login.component';
     AdminTableComponent,
     CustomerTableComponent,
     ImageDialogComponent,
-    LoginComponent
+    LoginComponent,
+    AppealComponent,
+    DialogComponent,
+    SnackbarComponent
     
   ],
   imports: [
@@ -38,7 +43,7 @@ import { LoginComponent } from '../app/components/login/login.component';
     AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,MatCardModule,MatProgressSpinnerModule,MatSnackBarModule,FlexLayoutModule,
     MatSidenavModule, LayoutModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule
   ],
-  entryComponents:[ImageDialogComponent],
+  entryComponents:[DialogComponent,ImageDialogComponent,AppealComponent],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
