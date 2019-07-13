@@ -1,0 +1,9 @@
+<form #commentDetails="ngForm">
+  <div>
+    <mat-form-field class="appeal-comments">
+      <mat-label>Please enter appealing comments</mat-label>
+      <textarea matInput [(ngModel)]="data.msg" name="msg" #msg="ngModel"
+        placeholder="Please enter appealing comments"></textarea>
+    </mat-form-field>
+  </div>
+</form>
