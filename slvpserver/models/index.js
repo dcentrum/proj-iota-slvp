@@ -6,20 +6,28 @@ const connectDb = () => {
     return mongoose.connect('mongodb://localhost:27017/slvp');
 };
 
-const getChallans = async (platenum = "", date = null, isAppealed = null, isPaid = null) => {
+const getChallans = async (platenum, date, isAppealed, isPaid) => {
     try {
         let condition = {};
-
-        if (platenum.length > 0)
+        if (platenum) {
             condition.platenum = platenum;
-        if (date != null)
-            condition.challanDate = date;
-        if (isAppealed != null)
-            condition.isAppealed = isAppealed;
-        if (isPaid != null)
-            condition.isPaid = isPaid;
+        } 
+        if (date) {            
+            var dt = new Date(date);
+            var d = dt.getDate();
+            var m = dt.getMonth();
+            var y = dt.getFullYear();
+            condition.challanDate = {
+                $gte: new Date(y, m, d), $lte: new Date(y, m, d, 23, 59, 59, 999)
+            };
 
-        let res = await Challan.find(condition).exec()
+
+        }
+        if (isAppealed)
+            condition.isAppealed = isAppealed;
+        if (isPaid)
+            condition.isPaid = isPaid;
+        let res = await Challan.find(condition)
         return res;
     } catch (err) {
         throw `failed to get Challans: ${err}`
@@ -42,11 +50,11 @@ const addChallan = async function
 };
 const appealChallan = async (challanNum) => {
     try {
-        
+
         const result = await Challan.findOne({ "challanNum": challanNum });
         result.isAppealed = true;
         result.IOTA_Channel_Start = result.IOTA_Channel_Start + 1;//,IOTA_Hash:mamres.mamMsg.root
-        return (await result.save())!=null;
+        return (await result.save()) != null;
     } catch (e) {
         throw `failed to get Challans: ${e}`
     }
@@ -59,7 +67,7 @@ const appealAction = async (challanNum, accept) => {
         const result = await Challan.findOne({ "challanNum": challanNum });
         result.isAppealAccepted = accept;
         result.IOTA_Channel_Start = result.IOTA_Channel_Start + 1;//,IOTA_Hash:mamres.mamMsg.root
-        return (await result.save())!=null;
+        return (await result.save()) != null;
     } catch (e) {
         throw `failed to get Challans: ${e}`
     }

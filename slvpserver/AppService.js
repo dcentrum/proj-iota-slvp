@@ -26,11 +26,9 @@ module.exports = {
         };
 
     },
-    getMChallans: async (platenum = "", date = null, isAppealed = null, isPaid = null, func) => {
+    getMChallans: async (platenum, date, isAppealed, isPaid) => {
         try {
             let dbchallans = await mdb.getChallans(platenum, date, isAppealed, isPaid);
-
-
             dbchallans.forEach(dbchallan => {
                 dbchallan.IOTA_Seed = "";
             });
@@ -83,7 +81,7 @@ module.exports = {
                 msg = element;
             });
             msg.isApplAprvd = accept,
-            msg.isApplAprvCmnts = commnts;
+                msg.isApplAprvCmnts = commnts;
             const mamres = await mam.updateChannel(msg, { start: dbChallan.IOTA_Channel_Start, seed: dbChallan.IOTA_Seed })
 
             const result = await mdb.appealAction(challanNum, accept);
@@ -91,5 +89,25 @@ module.exports = {
         } catch (e) {
             throw `failed to get appealAction: ${e}`
         }
+    },
+    getAppealComment: async (challanNum) => {
+        var cmts = ''
+        const dbChallan = await mdb.getChallan(challanNum);
+        const mamPrevChallan = await mam.fetch(dbChallan.IOTA_Hash);//this.getChannel(dbChallan.IOTA_Hash);
+        mamPrevChallan.messages.forEach(element => {
+            if (element.isAppealed)
+                cmts = element.applCmnts;
+        });
+        return cmts;
+    },
+    getAppealActionComment: async (challanNum) => {
+        var cmts = ''
+        const dbChallan = await mdb.getChallan(challanNum);
+        const mamPrevChallan = await mam.fetch(dbChallan.IOTA_Hash);//this.getChannel(dbChallan.IOTA_Hash);
+        mamPrevChallan.messages.forEach(element => {
+            if (element.isApplAprvd)
+                cmts = element.isApplAprvCmnts;
+        });
+        return cmts;
     }
 }
