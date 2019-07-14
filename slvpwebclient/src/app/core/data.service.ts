@@ -6,27 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  baseUrl:string = "http://localhost:4000";
+  baseUrl:string = "http://localhost:3000";
   ipfsBaseUrl:string = "http://localhost:8080/ipfs/";
  // QmPCXMZRUrU1tdrwfMKj9b8GSkRA4zPtwLAEjPgxTMVJaq
 
   constructor(private httpClient : HttpClient) { }
 
-  get_challans(number){
-    return this.httpClient.get(this.baseUrl + '/api/challans/'+number);
-}
-
-get_customers(){
-  return this.httpClient.get(this.baseUrl + '/data');
+  get_customers(){
+    return this.httpClient.get(this.baseUrl + '/data');
 }
 
  get_Image(image_hash){
   return this.httpClient.get(this.ipfsBaseUrl + image_hash);
 }
 
-  appeal(challannum,cmts){
-    return this.httpClient.post(this.baseUrl + '/api/challan/appeal',{comments:cmts,challannum:challannum})
-  }
 logout(){
 
 }

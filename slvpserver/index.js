@@ -2,20 +2,19 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 var appSrv = require('./AppService.js');
-var express = require('express');
 var multer = require('multer');
-var mongoose = require('mongoose');
 var upload = multer()
-//var TChallan = require('./models/TChallan');
 var models = require('./models');
 var app = express();
-
+var cors = require('cors');
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+app.options('*', cors());
+app.use(cors());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -51,7 +50,7 @@ app.get('/api/ipfs/getimage', async (req, res) => {
 });
 app.post('/api/challan/appeal/action', upload.single('ipfsfile'), async (req, res) => {
   try {
-    const result = await appSrv.appealAction(req.body.challannum,req.body.accept,req.body.comments);
+    const result = await appSrv.appealAction(req.body.challannum, req.body.accept, req.body.comments);
     return res.status(200).json(result)
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
@@ -59,7 +58,7 @@ app.post('/api/challan/appeal/action', upload.single('ipfsfile'), async (req, re
 });
 app.post('/api/challan/appeal', upload.single('ipfsfile'), async (req, res) => {
   try {
-   
+
     const result = await appSrv.appealChallan(req.body.challannum, req.body.comments);
     return res.status(200).json(result)
   } catch (err) {
@@ -85,21 +84,37 @@ app.get('/api/iota/channel/:root', async (req, res) => {
     throw res.status(500).json({ error: err.toString() })
   }
 });
-app.get('/api/challans/:platenum?/:date?/:isAppealed?/:isPaid?', async (req, res) => {
+app.get('/api/challans', upload.single('ipfsfile'), async (req, res) => {
   try {
-    var platenum = req.params.platenum; //either a value or undefined
-    var date = req.params.date;
-    var isAppealed = req.params.isAppealed;
-    var isPaid = req.params.isPaid;
+    var platenum = req.query.platenum;
+    var date = req.query.date;
+    var isAppealed = req.query.isappealed;
+    var isPaid = req.query.ispaid;
     var result = await appSrv.getMChallans(platenum, date, isAppealed, isPaid)
     return res.status(200).json(result);
   } catch (err) {
     throw res.status(500).json({ error: err.toString() })
   }
 });
+app.get('/api/challan/:challannum/appeal/comment', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    var challannum = req.params.challannum;
+    var result = await appSrv.getAppealComment(challannum)
+    return res.status(200).json({ comments: result });
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 
-
-
+app.get('/api/challan/:challannum/appeal/action/comment', upload.single('ipfsfile'), async (req, res) => {
+  try {
+    var challannum = req.params.challannum;
+    var result = await appSrv.getAppealActionComment(challannum)
+    return res.status(200).json({ comments: result });
+  } catch (err) {
+    throw res.status(500).json({ error: err.toString() })
+  }
+});
 app.listen(4000, function () {
   console.log('App listening on port 4000!');
 });

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService} from '../../core/data.service';
 
 @Component({
   selector: 'app-t-customer',
@@ -30,7 +29,7 @@ export class TCustomerComponent implements OnInit {
    
   ];
   customerForm: FormGroup;
-  constructor(private dataService: DataService, private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
     this.createForm();
   }
   
@@ -41,11 +40,8 @@ export class TCustomerComponent implements OnInit {
   search(val) {
     if (this.customerForm.valid) {
       this.isSearched = true; 
-      this.dataService.get_challans(val).subscribe(res=>{
-        this.searchResults = res;
-        this.isRecords = this.searchResults.length >0 ? true : false;
-      })
-      
+      this.searchResults = this.EXAMPLE_DATA;
+      this.isRecords = this.searchResults.length >0 ? true : false;
       console.log(val);
     }
     else {

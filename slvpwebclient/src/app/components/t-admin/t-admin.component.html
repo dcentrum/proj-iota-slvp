@@ -21,7 +21,7 @@
     </form>
     <div *ngIf="searchResults">
         <div *ngIf="isRecords">
-            <app-admin-table [data]="searchResults"></app-admin-table>
+            <app-customer-table [data]="searchResults"></app-customer-table>
         </div>
         <div class="noRecords" *ngIf="!isRecords">No records to display</div>
     </div>

@@ -1,11 +1,11 @@
 <mat-card class="example-card">
     <mat-card-header>
-      <mat-card-title>Pending violations</mat-card-title>
+      <mat-card-title>Public view</mat-card-title>
     </mat-card-header>
 <form [formGroup]="customerForm" novalidate>
   <div>
     <mat-form-field>
-      <mat-label>Registration number</mat-label>
+      <mat-label>plate number</mat-label>
       <input matInput type="text" [(ngModel)]="value" formControlName="number">
       <button mat-raised-button matSuffix color="primary" (click)="search(value)">Search</button>
     </mat-form-field>

@@ -16,7 +16,7 @@ export class ImageDialogComponent implements OnInit {
   //http://localhost:8080/ipfs/QmXvdcUqJU3gja7p4eCkZsKtv757ei1LzS9B5NsAmabvCA
   //entire foldr QmemVFxKvEASDYfQN4mbcxqk3hi4iEZfw31W6psUXDeREd
   ngOnInit() {
-    this.imageSource="http://localhost:4000/api/ipfs/getimage?ipfshash="+this.data;
+    this.imageSource="http://localhost:8080/ipfs/"+this.data;
     console.log("mydata",this.data);
   }
  /*  getImage(){
