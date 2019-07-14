@@ -13,10 +13,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-<<<<<<< HEAD
 app.options('*', cors());
 app.use(cors());
-=======
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -24,7 +22,6 @@ app.use(function(req, res, next) {
   next();
 });
 
->>>>>>> 7cd5347bf5001e3563a14ba7bad914e6d44b9a4a
 models.connectDb().then(async () => {
   console.log("mongodb connected")
 });
