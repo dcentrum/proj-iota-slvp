@@ -16,6 +16,7 @@ import { CustomerTableComponent } from './components/customer-table/customer-tab
 import { HttpClientModule } from '@angular/common/http';
 import { ImageDialogComponent } from './shared/image-dialog/image-dialog.component';
 import { MatDialogModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from '../app/components/login/login.component';
 import { AppealComponent } from '../app/components/appeal/appeal.component';
@@ -40,7 +41,7 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
   ],
   imports: [
     BrowserModule,HttpClientModule,FormsModule,ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,
-    AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,MatCardModule,MatProgressSpinnerModule,MatSnackBarModule,
+    AppRoutingModule,BrowserAnimationsModule,MatModule,MatDialogModule,MatCardModule,MatProgressSpinnerModule,MatSnackBarModule,FlexLayoutModule,
     MatSidenavModule, LayoutModule, MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule
   ],
   entryComponents:[DialogComponent,ImageDialogComponent,AppealComponent],

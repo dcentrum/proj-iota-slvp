@@ -12,6 +12,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+    <mat-toolbar-row>
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -20,11 +21,24 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Telangana Traffic Challan Portal</span>
+      <div fxFlex="15%"><span><img src="../../assets/images/TPLogo.png" style="width:55px;padding-top:6px" alt="traffic logo"/></span></div>
+      <div fxFlex="70%" class="title"><span>Telangana Traffic Challan Portal</span></div>
+      <div fxFlex="15%"><span>Welcomes....!!</span></div>
+    </mat-toolbar-row>
     </mat-toolbar>
     <!-- Add Content Here -->
     <div class="app-content">
       <router-outlet></router-outlet>
     </div>
+  
+   <!--  <mat-toolbar color="primary" class="footer">
+      <span style="text-align:center">Telangana state police © 2019</span>
+    </mat-toolbar> -->
+    <div class="footer" #footer>
+      <div class="row info">    
+              <div class="column col-lg-6 col-md-6 col-xs-12">Telangana state police © 2019</div>
+              <!-- <div class="column col-lg-6 col-md-6 col-xs-12">Twitter | FaceBook</div> -->
+      </div>  
+     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
