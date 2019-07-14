@@ -13,8 +13,13 @@ export class DataService {
   constructor(private httpClient : HttpClient) { }
 
   get_challans(number){
-    return this.httpClient.get(this.baseUrl + '/api/challans/'+number);
+    return this.httpClient.get(this.baseUrl + '/api/challans?plateNum='+number);
 }
+get_challansByDate(date){
+  return this.httpClient.get(this.baseUrl + '/api/challans?date='+date);
+}
+
+
 
 get_customers(){
   return this.httpClient.get(this.baseUrl + '/data');
