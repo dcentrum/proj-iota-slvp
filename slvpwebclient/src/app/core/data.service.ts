@@ -32,6 +32,10 @@ get_customers(){
   appeal(challannum,cmts){
     return this.httpClient.post(this.baseUrl + '/api/challan/appeal',{comments:cmts,challannum:challannum})
   }
+
+  appealAction(challannum,cmts,aceptStatus){
+    return this.httpClient.post(this.baseUrl + '/api/challan/appeal/action',{comments:cmts,challannum:challannum,accept:aceptStatus})
+  }
 logout(){
 
 }

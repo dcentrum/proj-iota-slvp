@@ -56,7 +56,7 @@ export class TAdminComponent implements OnInit {
      // this.searchResults = this.mockData;
       //this.isRecords = this.searchResults.length >0 ? true : false;
       console.log("data is:", this.date.format('MM/DD/YYYY'));
-      let date=this.date.format('MM/DD/YYYY');
+      let date=this.date.format('M/DD/YYYY');
 
       this.dataService.get_challansByDate(date).subscribe(res=>{
         this.searchResults = res;

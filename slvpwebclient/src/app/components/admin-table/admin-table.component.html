@@ -29,17 +29,17 @@
     <ng-container matColumnDef="appeal">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let row">
-          <span *ngIf="row.isPaid">Paid</span>
-          <div *ngIf="!row.isPaid">
-              <span *ngIf="!row.isAppealed">Appeal</span> 
-              <span *ngIf="row.isAppealed">Appeal in Review</span>
+          <span *ngIf="!row.isAppealed">Appeal</span>
+          <div *ngIf="row.isAppealed">
+              <span *ngIf="!row.isAppealAccepted">Appeal in Review</span>
+              <span *ngIf="row.isAppealAccepted">Appeal Accepted</span>          
           </div>
       </td>
     </ng-container>
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
       <td mat-cell *matCellDef="let row">
-        <div *ngIf="row.isAppealed">
+        <div *ngIf="row.isAppealed && !row.isAppealAccepted">
             <button class="btn-space" (click)="accept(row)">Accept</button>
             <button class="btn-space" (click)="reject(row)">Reject</button>
         </div>  

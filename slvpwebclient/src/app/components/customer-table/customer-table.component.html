@@ -24,10 +24,11 @@
     <ng-container matColumnDef="appeal">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let row">
-          <span *ngIf="row.isPaid">Paid</span>
-        <div *ngIf="!row.isPaid">
-            <span *ngIf="row.isAppealed">Appeal in Review</span>
-            <button *ngIf="!row.isAppealed" (click)="appealStatus(row)">Appeal</button>
+          <button *ngIf="!row.isAppealed" (click)="appealStatus(row)">Appeal</button>
+        <div *ngIf="row.isAppealed">
+            <span *ngIf="!row.isAppealAccepted">Appeal in Review</span>
+            <span *ngIf="row.isAppealAccepted">Appeal Accepted</span>
+            
         </div>
 
       </td>

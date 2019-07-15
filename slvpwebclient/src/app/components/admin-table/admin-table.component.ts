@@ -31,6 +31,23 @@ export class AdminTableComponent implements OnInit {
     this.dataSource = new AdminTableDataSource(this.data,this.paginator, this.sort);
   }
 
+  accept(row){
+    ///api/challan/:challannum/appeal/comment
+    this.dataService.appealAction(row.challanNum,'Not relevant to you','true' ).subscribe(resp => {
+      if (resp) {
+        this._snackBar.open("Successfully reviewd", "", {
+          duration: 2000,
+          verticalPosition :'top'
+        });
+      } else {
+        this._snackBar.open("issue with appealing action", "", {
+          duration: 2000,
+          verticalPosition :'top'
+        });
+      }
+    });
+  }
+
   openImage(id) {
     console.log("yes");
     this.configOptions = {
