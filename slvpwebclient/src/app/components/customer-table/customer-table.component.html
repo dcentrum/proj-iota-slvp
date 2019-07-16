@@ -27,8 +27,7 @@
           <button *ngIf="!row.isAppealed" (click)="appealStatus(row)">Appeal</button>
         <div *ngIf="row.isAppealed">
             <span *ngIf="!row.isAppealAccepted">Appeal in Review</span>
-            <span *ngIf="row.isAppealAccepted">Appeal Accepted</span>
-            
+            <span *ngIf="row.isAppealAccepted">Appeal Accepted</span>        
         </div>
 
       </td>
@@ -36,12 +35,18 @@
 
     <ng-container matColumnDef="fine">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Fine</th>
-      <td mat-cell *matCellDef="let row">500</td>
+      <td mat-cell *matCellDef="let row">
+        <span *ngIf="!row.isAppealAccepted">500</span>
+        <span *ngIf="row.isAppealAccepted">-</span>
+      </td>
+     
     </ng-container>
 
     <ng-container matColumnDef="pay">
       <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-      <td mat-cell *matCellDef="let row" ><button [disabled]="!(!row.isAppealed || row.isAppealed && row.isAppealAccepted)" (click)="pay(row)">Gpay</button></td>
+      <td mat-cell *matCellDef="let row" >
+        <span *ngIf="!row.isAppealAccepted"><button [disabled]="!(!row.isAppealed || row.isAppealed && row.isAppealAccepted)" (click)="pay(row)">Gpay</button></span>
+        </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

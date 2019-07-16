@@ -53,8 +53,8 @@ export class AdminTableComponent implements OnInit {
     console.log("yes");
     this.configOptions = {
       autoFocus: true,
-      height: "450px",
-      width: "450px",
+      height: "550px",
+      width: "650px",
       data: id
     };
     this.imgDialogRef = this.dialog.open(
