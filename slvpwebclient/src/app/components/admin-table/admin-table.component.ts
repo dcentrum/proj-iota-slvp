@@ -35,7 +35,8 @@ export class AdminTableComponent implements OnInit {
     ///api/challan/:challannum/appeal/comment
     this.dataService.appealAction(row.challanNum,'Not relevant to you','true' ).subscribe(resp => {
       if (resp) {
-        this._snackBar.open("Successfully reviewd", "", {
+        row.isAppealAccepted=true;
+        this._snackBar.open("Successfully reviewd and accepted", "", {
           duration: 2000,
           verticalPosition :'top'
         });

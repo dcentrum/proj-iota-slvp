@@ -72,6 +72,7 @@ export class CustomerTableComponent implements OnInit {
       if (result) {
         this.dataService.appeal(row.challanNum, result.msg).subscribe(resp => {
           if (resp) {
+            row.isAppealed=true;
             this._snackBar.open("successfully appealed", "", {
               duration: 2000,
               verticalPosition :'top'
