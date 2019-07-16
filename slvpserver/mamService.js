@@ -11,7 +11,7 @@ const publish= async (data, isJSON) => {
         //console.log(message)
         mamState = message.state;
         console.log(message)
-        let attachResult = await Mam.attach(message.payload, message.address,3,9,tag=data.platenum);
+        let attachResult = await Mam.attach(message.payload, message.address,3,9);
         return { transArr: attachResult, mamMsg: message, mamState: mamState };
     } catch (error) {
         console.log('MAM publish error', error);
