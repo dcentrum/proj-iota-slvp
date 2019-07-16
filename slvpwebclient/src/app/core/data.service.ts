@@ -13,7 +13,7 @@ export class DataService {
   constructor(private httpClient : HttpClient) { }
 
   get_challans(number){
-    return this.httpClient.get(this.baseUrl + '/api/challans?plateNum='+number);
+    return this.httpClient.get(this.baseUrl + '/api/challans?platenum='+number);
 }
 get_challansByDate(date){
   return this.httpClient.get(this.baseUrl + '/api/challans?date='+date);
